@@ -1,8 +1,8 @@
 /*!
- * scrollview.js
+ * scrollview.js v0.1812
  * @copyright 2018 AJgarden
  * ##### Author: Jia #####
- * ##### Update: 2018/11/05 #####
+ * ##### Update: 2018/12/28 #####
  */
 
 $.fn.scrollView = function(options) {
@@ -18,14 +18,19 @@ $.fn.scrollView = function(options) {
     $selector.attr('data-scroll-view','init');
 
     var defaults = {
-      start: 'default', // 'default'(str), selector(str) or px(int)
+      start: 'default', // 'default'(string), selector(string) or px(number)
       end: null,
       // null: until the bottom of page
-      // selector(str): until the bottom of direct element
-      // px(int): until the direct px
+      // selector(string): until the top or bottom of direct element
+      // px(number): until the direct px
       // only avaliable with repeat be true
-      threshold: -200,  // px(int)
-      addClass: 'scroll-view', // (str)
+      endKey: 'bottom',
+      // 'top': the end point will be top of the end selector element
+      // 'bottom': the end point will be bottom of the end selector element
+      // float number(number): the end point will be position of the end selector element's percentage height
+      // only avaliable with end type be selector(string)
+      threshold: -200,  // px(number)
+      addClass: 'scroll-view', // (string)
       repeat: false, // true or false
       onInit: function(element) {
         return false;
@@ -56,7 +61,7 @@ $.fn.scrollView = function(options) {
         if ($selector.attr('data-scroll-view') === "init") {
 
           var $this = $(element);
-          if ($this.hasClass('scroll-view') == false) {
+          if ($this.hasClass(settings.addClass) == false) {
             if (settings.start === "default")
               var pos = $this.offset().top - $(window).height();
             else if (typeof(settings.start) === "string")
@@ -65,10 +70,16 @@ $.fn.scrollView = function(options) {
               var pos = settings.start;
             if (settings.repeat == true) {
               if (settings.end != null) {
-                if (typeof(settings.end) === "string")
-                  var posE = $(settings.end).offset().top + $(settings.end).outerHeight() - $(window).height();
-                else
+                if (typeof(settings.end) === "string") {
+                  if (settings.endKey == "top")
+                    var posE = $(settings.end).offset().top - $(window).height();
+                  else if (typeof(settings.endKey) === "number")
+                    var posE = $(settings.end).offset().top + $(settings.end).outerHeight() * Math.min(Math.max(0,settings.endKey),1) - $(window).height();
+                  else
+                    var posE = $(settings.end).offset().top + $(settings.end).outerHeight() - $(window).height();
+                } else {
                   var posE = settings.end;
+                }
                 if ((scrollTop + settings.threshold) >= pos && (scrollTop + settings.threshold) <= posE) {
                   if (typeof(settings.onChange) === "function" && typeof(settings.onAddClass) === "function") {
                     $this.addClass(settings.addClass);
@@ -127,10 +138,16 @@ $.fn.scrollView = function(options) {
               else
                 var pos = settings.start;
               if (settings.end != null) {
-                if (typeof(settings.end) === "string")
-                  var posE = $(settings.end).offset().top + $(settings.end).outerHeight() - $(window).height();
-                else
+                if (typeof(settings.end) === "string") {
+                  if (settings.endKey == "top")
+                    var posE = $(settings.end).offset().top - $(window).height();
+                  else if (typeof(settings.endKey) === "number")
+                    var posE = $(settings.end).offset().top + $(settings.end).outerHeight() * Math.min(Math.max(0,settings.endKey),1) - $(window).height();
+                  else
+                    var posE = $(settings.end).offset().top + $(settings.end).outerHeight() - $(window).height();
+                } else {
                   var posE = settings.end;
+                }
                 if ((scrollTop + settings.threshold) < pos || (scrollTop + settings.threshold) > posE) {
                   if (typeof(settings.onChange) === "function" && typeof(settings.onRemoveClass) === "function") {
                     $this.removeClass(settings.addClass);
