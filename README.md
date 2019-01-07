@@ -15,3 +15,18 @@
   // should be string, add the class name to target element</p>
 <p>repeat: false<br>
   // should be boolean</p>
+
+
+<h2>Callbacks:</h2>
+<p>onInit: function(element) { ... }<br>
+  // callback when element is initialized</p>
+<p>onChange: function(element) { ... }<br>
+  // callback when element changes it's status everytime</p>
+<p>onAddClass: function(element) { ... }<br>
+  // callback after element adding class everytime</p>
+<p>onRemoveClass: function(element) { ... }<br>
+  // callback after element removing class everytime</p>
+  
+
+<h2>Destroy:</h2>
+<p>If you want to stop scrollView on direct element, just call $(selector).scrollView('destroy').</p>
