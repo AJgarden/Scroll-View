@@ -1,6 +1,6 @@
 # Scroll-View
 
-<h2>Options:</h2>
+<h2>Options(and default value):</h2>
 <p>start: 'default'<br>
   // should be 'default', selector(string) or px(number)</p>
 <p>end: null<br>
