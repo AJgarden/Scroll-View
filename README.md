@@ -1,4 +1,5 @@
 # Scroll-View
+Must include jQuery library 1.9+ front of this script.
 
 <h2>Options(and default value):</h2>
 <p>start: 'default'<br>
